@@ -862,6 +862,12 @@ int dsi_panel_set_fod_hbm(struct dsi_panel *panel, bool status)
 		if (rc)
 			pr_err("[%s] failed to send DSI_CMD_SET_MI_HBM_FOD_OFF cmd, rc=%d\n",
 					panel->name, rc);
+#ifdef CONFIG_EXPOSURE_ADJUSTMENT
+		if (panel->resend_ea) {
+			ea_panel_mode_ctrl(panel, 1);
+			panel->resend_ea = false;
+		}
+#endif
 	}
 
 	return rc;
